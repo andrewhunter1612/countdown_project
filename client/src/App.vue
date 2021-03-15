@@ -1,8 +1,21 @@
 <template >
   <div>
-    <header>COUNTDOWN</header>
-    <h2 v-if="game === 0">CHOOSE YOUR GAME</h2>
-    <section >
+   <header>COUNTDOWN</header>
+    <div v-if="!submitClicked">
+      <form @submit.prevent="playerInfo" id="info-form">
+        <label for="name">Enter your name: </label>
+        <input type="text" name="name" id="name" v-model="currentPlayer.name">
+
+        <label for="room">Enter your room number: </label>
+        <input type="text" name="room" id="room" v-model="currentPlayer.room">
+
+        <input type="submit" value="Go">
+      </form>
+    </div>
+
+    
+    <section v-if="submitClicked" >
+      <h2 v-if="game === 0">CHOOSE YOUR GAME {{currentPlayer.name}}</h2>
       <button v-if="game === 0" @click="gameSelect('Letters')">Letters</button>
       <button v-if="game === 0" @click="gameSelect('Numbers')">Numbers</button>
       <button v-if="game === 0" @click="gameSelect('Conundrum')">Conundrum</button>
@@ -29,7 +42,9 @@ import {eventBus} from '@/main.js'
         currentRoundNumber: 0,
         fullGameRounds: ['Letters', 'Numbers', 'Conundrum'],
         fullGame: false,
-        players: [{name: 'Player One', word: "", score: 0},{name: 'Player Two', word: "", score: 0}]
+        players: [{name: 'Player One', word: "", score: 0},{name: 'Player Two', word: "", score: 0}],
+        currentPlayer: {},
+        submitClicked: false
       }
     },
     components:{
@@ -45,6 +60,9 @@ import {eventBus} from '@/main.js'
           this.fullGame = true
           this.currentRoundNumber = 1
         }
+      },
+      playerInfo(){
+        this.submitClicked = true
       }
     },
     mounted(){
