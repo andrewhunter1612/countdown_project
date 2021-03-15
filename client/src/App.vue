@@ -76,13 +76,7 @@ import {eventBus} from '@/main.js'
         this.game = this.fullGameRounds[this.currentRoundNumber-1]
       })
 
-      eventBus.$on('add-scores', (score) => {
-        this.players.filter((player) => {
-          if (player.name === score.name){
-            player.score += score.score
-          }
-        })
-      })
+      eventBus.$on('add-score', (data) => this.currentPlayer.score += data.score)
       
     }
   }

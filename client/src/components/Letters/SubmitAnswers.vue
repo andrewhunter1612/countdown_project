@@ -5,21 +5,9 @@
           <div class="player-input">
             <label for="player_one_input">Your word: </label>
             <input type="text" name="player_one_input" v-model="playerOneWord" required >
-            <p v-if="submitClicked && !pOneWord">This is not a word</p>
-            <button class="definition-button" v-if="submitClicked && !definitionOneClicked && pOneWord" @click="getWordDefinition('Player One')">Definition</button>
-            <p class="definition" v-if="submitClicked && definitionOneClicked && pOneWord">{{playerOneMeaning}}</p>
-
+            <p v-if="falseWord">This is not a word</p>
           </div>
 
-          <!-- <div class="player-input">
-            <label for="player_two_input">Player 2 word: </label>
-            <input type="text" name="player_two_input" v-model="playerTwoWord" required >
-            <p v-if="submitClicked && !pTwoWord">
-              {{ playerTwoMeaning }}
-            </p>
-            <button class="definition-button" v-if="submitClicked && !definitionTwoClicked && pTwoWord" @click="getWordDefinition('Player Two')">Definition</button>
-            <p class="definition" v-if="submitClicked && definitionTwoClicked && pTwoWord">{{playerTwoMeaning}}</p>
-          </div> -->
         </div>
         <div id="submit-button" >
           <input v-if="!submitClicked" type="submit" value="Submit Word">
@@ -34,32 +22,24 @@
 import {eventBus} from '@/main.js'
 
     export default {
-      props: ['players', 'fullGame', 'currentPlayer'],
+      props: ['players', 'fullGame', 'currentPlayer', 'falseWord'],
             
       data(){
         return{
           playerOneMeaning: "",
-          playerTwoMeaning: "",
           playerOneWord: "",
-          playerTwoWord: "",
           submitClicked: false,
           definitionOneClicked: false,
-          definitionTwoClicked: false
         }
       },
       methods:{
         submitWords(){
-          const words = [
-            {
-              name: "Player One", 
+          const words = {
+              name: this.currentPlayer.name, 
               word: this.playerOneWord
-            },
-            {
-              name: "Player Two",
-              word: this.playerTwoWord
-            }
-          ]
-          eventBus.$emit('player-words', words)
+              }
+          
+          eventBus.$emit('player-word', words)
           this.submitClicked = true
         },
 
@@ -68,64 +48,16 @@ import {eventBus} from '@/main.js'
           this.resetEverything()
         },
         
-        getWordDefinition(playerName){
-          for (let player of this.players){
-            if (playerName == player.name && player.word.length > 0){
-              fetch(`https://api.dictionaryapi.dev/api/v2/entries/en_US/${player.word}`)
-              .then((res) => res.json())
-              .then((data) => {
-                if (playerName === 'Player One'){
-                  this.playerOneMeaning = data[0].meanings[0].definitions[0].definition
-                  this.definitionOneClicked = true
-                } else if (playerName === 'Player Two') {
-                  this.playerTwoMeaning = data[0].meanings[0].definitions[0].definition
-                  this.definitionTwoClicked = true
-                } 
-              })
-            } else if (player.name === playerName && !player.word) {
-              if (player.name === 'Player One'){
-                this.playerOneMeaning = "Not a word"
-                this.definitionOneClicked = true
-              }
-              else if (player.name === 'Player Two') {
-                this.playerTwoMeaning = "Not a word"
-                this.definitionTwoClicked = true
-              }
-            }       
-          }
-        },
+       
         resetEverything(){
           this.submitClicked = false
           this.playerOneWord = ""
-          this.playerTwoWord = ""
           this.playerOneMeaning = ""
-          this.playerTwoMeaning = ""
           this.definitionOneClicked = false
-          this.definitionTwoClicked = false
           eventBus.$emit('reset-everything')
         }
       },
-      computed:{
-        pOneWord: function(){
-          let wordToReturn = "empty"
-          this.players.filter((player) => {
-            if (player.name === 'Player One'){
-              wordToReturn = player.word
-            }
-          })
-          return wordToReturn
-        },
-        pTwoWord: function(){
-          let wordToReturn = "empty"
-          this.players.filter((player) => {
-            if (player.name === 'Player Two'){
-              wordToReturn = player.word
-            }
-          })
-          return wordToReturn
-        }
 
-      },
     }
 </script>
 

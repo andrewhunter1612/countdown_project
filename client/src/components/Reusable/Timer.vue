@@ -39,7 +39,7 @@ import {GChart} from 'vue-google-charts'
                         clearInterval(changeTimer)
                         console.log('timer stopped');
                         eventBus.$emit('timer-stopped', this.newTime)
-                    } else if (this.newTime[1][1] > 3){
+                    } else if (this.newTime[1][1] > 1){
                         clearInterval(changeTimer)
                         eventBus.$emit('timer-finished')
                     } else {
