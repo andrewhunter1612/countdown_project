@@ -113,9 +113,6 @@ import {eventBus} from '@/main.js'
         this.letters = ['f', 'i', 'r', 'e', 'b', 'o', 'a', 'r', 'd']
         this.timerEnded = false
         this.enteredWords = []
-        for (let player of this.players){
-          player.word = ""
-        }
         this.currentTime = [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]]
       })
     },

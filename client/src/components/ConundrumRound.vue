@@ -2,11 +2,10 @@
   <div>
         <section id="background">
             <div id="scores">
-                <h2>Player 1: {{players[0].score}}</h2>
+                <h2>{{currentPlayer.name}}: {{currentPlayer.score}}</h2>
                 <h2>CONUNDRUM ROUND</h2>
-                <h2>Player 2: {{players[1].score}}</h2>
             </div>
-            <timer v-if="resetTimer" :stopTimer="stopTimer" :times="currentTime"/>
+            <timer v-if="!stopTimer" :stopTimer="stopTimer" :times="currentTime" :reset="resetTimer"/>
             <letters-board :letters="jumbledWord"/>
             <conundrum-submit v-if="correctPlayer.length === 0" :stopTimer="stopTimer" />
             <correct-answer :fullGame="fullGame" v-if="correctPlayer.length > 0" :playerName="correctPlayer"/>
@@ -25,7 +24,7 @@ import CountdownService from '@/services/CountdownService'
 import {eventBus} from '@/main.js'
 
 export default {
-    props: ['fullGame', 'players'],
+    props: ['fullGame', 'currentPlayer'],
     data(){
         return {
             word: '',
@@ -33,7 +32,7 @@ export default {
             correctPlayer: "",
             stopTimer: false,
             currentTime: [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]],
-            resetTimer: true
+            resetTimer: false
         }
     },
 
@@ -52,21 +51,11 @@ export default {
     mounted(){
         eventBus.$on('conundrum-answered', (conundrum) => {
             if (conundrum.word.toUpperCase() === this.word){
-                this.correctPlayer = `${conundrum.name} was correct`
-                this.players.filter((player)=> {
-                    if (player.name === conundrum.name){
-                        player.score += 10
-                        this.stopTimer = true
-                    }
-                })
+                this.correctPlayer = `You are correct`
+                let player = {name: this.currentPlayer.name, score: 10}
+                eventBus.$emit('add-score', player)
             } else {
-                this.players.filter((player) => {
-                    if (player.name !== conundrum.name){
-                        player.score += 10
-                        this.stopTimer = true
-                        this.correctPlayer = `${conundrum.name} was wrong, the correct answer was ${this.word}`
-                    }
-                })
+                this.correctPlayer = `You were wrong, the correct answer was ${this.word}`
             }
         })
 
@@ -75,7 +64,6 @@ export default {
                 this.currentTime = [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]]
                 this.stopTimer = false
                 this.correctPlayer = ""
-                this.resetTimer = false
                 this.resetTimer = true
 
             })
@@ -88,15 +76,14 @@ export default {
 
         eventBus.$on('timer-stopped', (timer) => this.currentTime = timer)
 
+        eventBus.$on('timer-finished', (timer) => this.stopTimer = true)
+
         this.getConundrumWord()
 
         eventBus.$on('next-round', () => {
             this.currentTime = [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]]
             this.timerEnded = false
             this.enteredWords = []
-            for (let player of this.players){
-                player.word = ""
-            }
         })
     },
     computed:{

@@ -10,13 +10,17 @@ import {eventBus} from '@/main.js'
 import {GChart} from 'vue-google-charts'
     export default {
         name: 'timer',
-        props: ['times', 'stopTimer'],
+        props: ['times', 'stopTimer', 'reset'],
         data(){
             return {
             }
         },
        
         mounted() {
+            if (this.reset){
+                console.log('in reset');
+                this.timer()
+            }
             this.timer()
 
             eventBus.$on('start-timer-button', () => {
@@ -30,25 +34,24 @@ import {GChart} from 'vue-google-charts'
             })
         },
         methods: {
-                timer(){
-                    let changeTimer = setInterval(() => {
-                    this.newTime = [...this.times]
-                    
-                    if (this.stopTimer == true){
-                        console.log('stopped timer');
-                        clearInterval(changeTimer)
-                        console.log('timer stopped');
-                        eventBus.$emit('timer-stopped', this.newTime)
-                    } else if (this.newTime[1][1] > 1){
-                        clearInterval(changeTimer)
-                        eventBus.$emit('timer-finished')
-                    } else {
-                        eventBus.$emit('change-timer', this.newTime)
-                        this.newTime[2][1] -=0.1
-                        this.newTime[1][1] += 0.1
-                    }   
-                }, 100);
+            timer(){
+                let changeTimer = setInterval(() => {
+                this.newTime = [...this.times]
                 
+                if (this.stopTimer == true){
+                    console.log('stopped timer');
+                    clearInterval(changeTimer)
+                    console.log('timer stopped');
+                    eventBus.$emit('timer-stopped', this.newTime)
+                } else if (this.newTime[1][1] > 1){
+                    clearInterval(changeTimer)
+                    eventBus.$emit('timer-finished')
+                } else {
+                    eventBus.$emit('change-timer', this.newTime)
+                    this.newTime[2][1] -= 0.1
+                    this.newTime[1][1] += 0.1
+                }   
+                }, 100);
             }
         },
         components:{

@@ -10,10 +10,10 @@
             <input type="text" name="playerOne" v-model="playerOneWord">
         </div>
     
-        <div class="player-input">  
+        <!-- <div class="player-input">  
             <label for="playerTwo">Player Two: </label>
             <input type="text" name="playerTwo" v-model="playerTwoWord" >
-        </div>
+        </div> -->
       </div>
 
       <input id="submit-button" type="submit" value="Submit Answer">
