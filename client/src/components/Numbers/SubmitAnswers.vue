@@ -3,14 +3,10 @@
         <form @submit.prevent="submitNumbers">
           <div id="player-input-form">
             <div class="player-input">
-                <label for="playerOne">Player One: </label>
+                <label for="playerOne">Your Answer: </label>
                 <input type="number" name="playerOne" v-model="playerOneNumber">
             </div>
             
-            <div class="player-input">
-                <label for="playerTwo">Player Two: </label>
-                <input type="number" name="playerTwo" v-model="playerTwoNumber" >
-            </div>
           </div>
             <input id="submit-button" type="submit" value="Submit Answer">
       </form>
@@ -22,20 +18,16 @@ import {eventBus} from '@/main.js'
     export default {
         data(){
             return {
-                playerOneNumber: 0,
-                playerTwoNumber: 0
+                playerOneNumber: 0
             }
         },
+
         methods:{
             submitNumbers(){
-                let numbers = [
-                    {name: 'Player One', score: this.playerOneNumber},
-                    {name: 'Player Two', score: this.playerTwoNumber}
-                ]
-                eventBus.$emit('numbers-answers', numbers)
+                let data = {name: 'Player One', score: this.playerOneNumber}
+                eventBus.$emit('numbers-answer', data)
             }
         }
-        
     }
 </script>
 

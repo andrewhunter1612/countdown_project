@@ -1,9 +1,8 @@
 <template>
     <section>
         <div id="scores">
-            <h2>Player 1: {{players[0].score}}</h2>
+            <h2>{{currentPlayer.name}}: {{currentPlayer.score}}</h2>
             <h2>NUMBERS ROUND</h2>
-            <!-- <h2>Player 2: {{players[1].score}}</h2> -->
         </div>
         <timer  v-if="targetNumber > 0 && !timerEnded" :times="currentTime"/>
         <choose-numbers v-if="targetNumber === 0" />
@@ -22,7 +21,7 @@ import CheckAnswers from '@/components/Numbers/CheckAnswers.vue'
 
 import {eventBus} from '@/main.js'
     export default {
-        props: ['fullGame', 'players'],
+        props: ['fullGame', 'players', 'currentPlayer'],
         data(){
             return {
                 largeNumbers: [25, 50, 75, 100],
@@ -41,28 +40,8 @@ import {eventBus} from '@/main.js'
                 this.targetNumber = 0
                 this.submitClicked = false
                 this.currentTime = [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]]
-                for (let player of this.players){
-                    player.word = ""
-                }
             },
-            declareWinner(playerName, pointsDifference){
-                if (pointsDifference === 0){
-                    this.addPoints(playerName, 10)
-                } else if (pointsDifference < 10 && pointsDifference > 5){
-                    this.addPoints(playerName, 7)
-                } else if (pointsDifference < 10){
-                    this.addPoints(playerName, 5)
-                } 
-            },
-            addPoints(playerName, points){
-                this.players.filter((player) => {
-                    if (player.name === playerName){
-                        player.score += points
-                    } else if (playerName == 'Draw'){
-                        player.score += points
-                    }
-                })
-            }
+            
         },
 
         mounted(){
@@ -82,19 +61,30 @@ import {eventBus} from '@/main.js'
                 this.targetNumber = Math.floor(Math.random() * Math.floor(898))+101
             })
 
-            eventBus.$on('numbers-answers', (players) => {
-                let playerOneDifference = this.targetNumber - players[0].score
-                let playerTwoDifference = this.targetNumber - players[1].score
-                if (playerOneDifference < 0) playerOneDifference *= -1
-                if (playerTwoDifference < 0) playerTwoDifference *= -1
+            eventBus.$on('numbers-answer', (data) => {
+                let playerDifference = this.targetNumber - data.score
+                if (playerDifference < 0) playerDifference *= -1
+
+                let player = {name: this.currentPlayer.name}
+
+                if (playerDifference === 0){
+                    player.score = 10
+                    eventBus.$emit('add-score', player)
+                } else if (playerDifference < 10 && playerDifference > 5){
+                    player.score = 7
+                    eventBus.$emit('add-score', player)
+                } else if (playerDifference < 10){
+                    player.score = 5
+                    eventBus.$emit('add-score', player)
+                } 
                 
-                if (playerOneDifference > playerTwoDifference){
-                    this.declareWinner('Player Two',playerTwoDifference)
-                } else if (playerTwoDifference > playerOneDifference){
-                    this.declareWinner('Player One', playerOneDifference)
-                } else {
-                    this.declareWinner('Draw', playerOneDifference)
-                }
+                // if (playerOneDifference > playerTwoDifference){
+                //     this.declareWinner('Player Two',playerTwoDifference)
+                // } else if (playerTwoDifference > playerOneDifference){
+                //     this.declareWinner('Player One', playerOneDifference)
+                // } else {
+                //     this.declareWinner('Draw', playerOneDifference)
+                // }
                 this.submitClicked = true
             })
 

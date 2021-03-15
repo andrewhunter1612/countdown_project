@@ -26,8 +26,8 @@
 
       <h1 v-if="fullGame">Round {{currentRoundNumber}}</h1>
       <letter-round v-if="game === 'Letters'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame" />
-      <conundrum v-if="game === 'Conundrum'" :players="players" :fullGame="fullGame"/>
-      <number-round v-if="game === 'Numbers'" :players="players" :fullGame="fullGame"/>
+      <conundrum v-if="game === 'Conundrum'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame"/>
+      <number-round v-if="game === 'Numbers'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame"/>
       <p id="total-div"></p>
     </section>
   </div>  

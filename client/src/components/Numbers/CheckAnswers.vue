@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <!-- <div>
             <div>
                 <button class="answer-button" @click="numberOne" >{{numbers[0]}}</button>
                 <button class="answer-button" @click="numberTwo" >{{numbers[1]}}</button>
@@ -20,7 +20,7 @@
             <p>{{typedCalculation}}</p>
         </div>
         
-        <button class="submit-button" @click="finishedEquals" >Check Answer</button>
+        <button class="submit-button" @click="finishedEquals" >Check Answer</button> -->
         <button class="submit-button" v-if="fullGame && finished" @click="nextRound">Next Round</button>
         <button class="submit-button" v-if="!fullGame && finished" @click="resetEverything">Reset Game</button>
     </div>
@@ -37,7 +37,7 @@ import {eventBus} from '@/main.js'
                 calculation: "",
                 operator: "",
                 firstNumber: 0,
-                finished: false
+                finished: true
             }
         },
         
