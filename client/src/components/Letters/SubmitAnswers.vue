@@ -3,7 +3,7 @@
       <form @submit.prevent="submitWords">
         <div id="player-input-form">
           <div class="player-input">
-            <label for="player_one_input">Player 1 word: </label>
+            <label for="player_one_input">Your word: </label>
             <input type="text" name="player_one_input" v-model="playerOneWord" required >
             <p v-if="submitClicked && !pOneWord">This is not a word</p>
             <button class="definition-button" v-if="submitClicked && !definitionOneClicked && pOneWord" @click="getWordDefinition('Player One')">Definition</button>
@@ -11,7 +11,7 @@
 
           </div>
 
-          <div class="player-input">
+          <!-- <div class="player-input">
             <label for="player_two_input">Player 2 word: </label>
             <input type="text" name="player_two_input" v-model="playerTwoWord" required >
             <p v-if="submitClicked && !pTwoWord">
@@ -19,10 +19,10 @@
             </p>
             <button class="definition-button" v-if="submitClicked && !definitionTwoClicked && pTwoWord" @click="getWordDefinition('Player Two')">Definition</button>
             <p class="definition" v-if="submitClicked && definitionTwoClicked && pTwoWord">{{playerTwoMeaning}}</p>
-          </div>
+          </div> -->
         </div>
         <div id="submit-button" >
-          <input v-if="!submitClicked" type="submit" value="Submit words">
+          <input v-if="!submitClicked" type="submit" value="Submit Word">
           <button v-if="submitClicked && fullGame" @click="nextRound">Next Round</button>
           <button v-if="submitClicked && !fullGame" @click="resetEverything">Reset Game</button>
         </div>
@@ -34,7 +34,7 @@
 import {eventBus} from '@/main.js'
 
     export default {
-      props: ['players', 'fullGame'],
+      props: ['players', 'fullGame', 'currentPlayer'],
             
       data(){
         return{

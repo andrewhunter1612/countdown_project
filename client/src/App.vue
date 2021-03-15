@@ -11,17 +11,21 @@
 
         <input type="submit" value="Go">
       </form>
-    </div>
+    </div> 
 
     
     <section v-if="submitClicked" >
       <h2 v-if="game === 0">CHOOSE YOUR GAME {{currentPlayer.name}}</h2>
       <button v-if="game === 0" @click="gameSelect('Letters')">Letters</button>
+
       <button v-if="game === 0" @click="gameSelect('Numbers')">Numbers</button>
+
       <button v-if="game === 0" @click="gameSelect('Conundrum')">Conundrum</button>
+
       <button v-if="game === 0" @click="gameSelect('Full Game')">Full Game</button>
+
       <h1 v-if="fullGame">Round {{currentRoundNumber}}</h1>
-      <letter-round v-if="game === 'Letters'" :players="players" :fullGame="fullGame" />
+      <letter-round v-if="game === 'Letters'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame" />
       <conundrum v-if="game === 'Conundrum'" :players="players" :fullGame="fullGame"/>
       <number-round v-if="game === 'Numbers'" :players="players" :fullGame="fullGame"/>
       <p id="total-div"></p>
@@ -43,8 +47,8 @@ import {eventBus} from '@/main.js'
         fullGameRounds: ['Letters', 'Numbers', 'Conundrum'],
         fullGame: false,
         players: [{name: 'Player One', word: "", score: 0},{name: 'Player Two', word: "", score: 0}],
-        currentPlayer: {},
-        submitClicked: false
+        currentPlayer: {name: 'Andrew', room:'test', score:0},
+        submitClicked: true
       }
     },
     components:{
@@ -63,6 +67,7 @@ import {eventBus} from '@/main.js'
       },
       playerInfo(){
         this.submitClicked = true
+        this.currentPlayer.score = 0
       }
     },
     mounted(){

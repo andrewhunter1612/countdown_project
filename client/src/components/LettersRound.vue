@@ -2,15 +2,15 @@
     <div>
       <section id="background">
         <div id="scores">
-          <h2>Player 1: {{players[0].score}}</h2>
+          <h2>{{currentPlayer.name}}: {{currentPlayer.score}}</h2>
           <h2>LETTERS ROUND</h2>
-          <h2>Player 2: {{players[1].score}}</h2>
+          <!-- <h2>Player 2: {{players[1].score}}</h2> -->
         </div>
         
         <timer v-if="letters.length === 9 && !timerEnded" :times="currentTime"/>
         <letters-board :letters="letters"/>
         <letter-input v-if="letters.length < 9" />
-        <submit-answers v-if="timerEnded" :players="players" :fullGame="fullGame"/>
+        <submit-answers v-if="timerEnded" :players="players" :currentPlayer="currentPlayer" :fullGame="fullGame"/>
       </section>
     </div>
 </template>
@@ -23,7 +23,7 @@ import SubmitAnswers from '@/components/Letters/SubmitAnswers.vue'
 
 import {eventBus} from '@/main.js'
   export default {
-    props: ['fullGame', 'players'],
+    props: ['fullGame', 'players', 'currentPlayer'],
 
     data(){
       return {
