@@ -3,7 +3,7 @@
         <div id="scores">
             <h2>Player 1: {{players[0].score}}</h2>
             <h2>NUMBERS ROUND</h2>
-            <h2>Player 2: {{players[1].score}}</h2>
+            <!-- <h2>Player 2: {{players[1].score}}</h2> -->
         </div>
         <timer  v-if="targetNumber > 0 && !timerEnded" :times="currentTime"/>
         <choose-numbers v-if="targetNumber === 0" />

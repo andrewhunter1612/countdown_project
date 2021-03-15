@@ -9,7 +9,7 @@
         <timer v-if="letters.length === 9 && !timerEnded" :times="currentTime"/>
         <letters-board :letters="letters"/>
         <letter-input v-if="letters.length < 9" />
-        <submit-answers v-if="timerEnded" :players="players" :currentPlayer="currentPlayer" :falseWord="falseWord" :fullGame="fullGame"/>
+        <submit-answers v-if="timerEnded" :currentPlayer="currentPlayer" :falseWord="falseWord" :fullGame="fullGame"/>
       </section>
     </div>
 </template>
@@ -22,7 +22,7 @@ import SubmitAnswers from '@/components/Letters/SubmitAnswers.vue'
 
 import {eventBus} from '@/main.js'
   export default {
-    props: ['fullGame', 'players', 'currentPlayer'],
+    props: ['fullGame', 'currentPlayer'],
 
     data(){
       return {
@@ -30,8 +30,6 @@ import {eventBus} from '@/main.js'
         // letters:[],
         timerEnded: false,
         enteredWords: [],
-        numberOfPlayers: 1,
-        definition: "",
         currentWord: "",
         currentTime: [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]],
         falseWord: false
@@ -40,12 +38,10 @@ import {eventBus} from '@/main.js'
 
     methods:{
       checkWord(word, name){
-        console.log('wird', word);
         fetch(`https://api.dictionaryapi.dev/api/v2/entries/en_US/${word}`)
           .then((res) => res.json())
           .then((data) => {
             if (word === data[0].word){
-              console.log('inif');
               this.checkEnterWordIsAllowed(word)
               this.addScores(word, name)
             }
@@ -94,6 +90,7 @@ import {eventBus} from '@/main.js'
         })
       }
     },
+
     mounted(){
       eventBus.$on('add-letter', letter => this.letters.push(letter.toUpperCase()))
 
@@ -105,14 +102,11 @@ import {eventBus} from '@/main.js'
         this.currentTime = [['name', 'time'], ['currentTime', 0], ['timeUnused', 60]]
         this.timerEnded = false
         this.enteredWords = []
-        for (let player of this.players){
-          player.word = ""
-        }
+        
       })
 
       eventBus.$on('change-timer', (timer) => this.currentTime=timer)
       
-
       eventBus.$on('timer-finished', () => this.timerEnded = true)
 
       eventBus.$on('reset-everything', () => {
