@@ -1,6 +1,8 @@
 <template >
   <div>
    <header>COUNTDOWN</header>
+   <!-- <router-view /> -->
+
     <div v-if="!submitClicked">
       <form @submit.prevent="playerInfo" id="info-form">
         <label for="name">Enter your name: </label>
@@ -25,10 +27,11 @@
       <button v-if="game === 0" @click="gameSelect('Full Game')">Full Game</button>
 
       <h1 v-if="fullGame">Round {{currentRoundNumber}}</h1>
-      <letter-round v-if="game === 'Letters'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame" />
+      <letter-round v-if="game === 'Letters'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame" ><router-link :to="{name: 'letters'}"></router-link></letter-round>
       <conundrum v-if="game === 'Conundrum'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame"/>
       <number-round v-if="game === 'Numbers'" :currentPlayer="currentPlayer"  :players="players" :fullGame="fullGame"/>
       <p id="total-div"></p>
+      
     </section>
   </div>  
 </template>

@@ -43,7 +43,6 @@ export default {
                 let conundrum = words[Math.floor(Math.random()*words.length)].name.toUpperCase()
                 this.word = conundrum
                 this.jumbledWord = [...conundrum].sort()
-                console.log('word', this.word);
             })
         }
     },
