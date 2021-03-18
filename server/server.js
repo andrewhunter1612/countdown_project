@@ -12,10 +12,14 @@ app.use(bodyParser.json());
 
 MongoClient.connect('mongodb://localhost:27017')
   .then((client) => {
-    const db = client.db('conundrum');
-    const wordsCollection = db.collection('conundrumWords');
-    const wordsRouter = createRouter(wordsCollection);
-    app.use('/api/conundrum-words', wordsRouter);
+    const db = client.db('countdown');
+    const conundrumCollection = db.collection('conundrumWords');
+    const conundrumRouter = createRouter(conundrumCollection);
+    app.use('/api/conundrum-words', conundrumRouter);
+
+    const playerCollection = db.collection('players')
+    const playersRouter = createRouter(playerCollection)
+    app.use('/api/players', playersRouter)
   })
   .catch(console.err);
 

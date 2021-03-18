@@ -1,6 +1,14 @@
-use conundrum;
+use countdown;
 
 db.dropDatabase()
+
+db.players.insertOne([
+    {
+        name: 'Andrew',
+        score: 0
+    }
+    
+])
 
 db.conundrumWords.insertMany([
     {name: "Fireboard"},
@@ -19,7 +27,6 @@ db.conundrumWords.insertMany([
     {name: "Irregular"},
     {name: "Something"},
     {name: "Knowledge"},
-    {name: "Macaronic"},
     {name: "Pollution"},
     {name: "President"},
     {name: "Wrestling"},
