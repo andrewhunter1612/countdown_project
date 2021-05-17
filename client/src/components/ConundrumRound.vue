@@ -39,6 +39,7 @@ export default {
 
     methods:{
         getConundrumWord(){
+
             CountdownService.getConundrumWords()
             .then(words => {
                 let conundrum = words[Math.floor(Math.random()*words.length)].name.toUpperCase()

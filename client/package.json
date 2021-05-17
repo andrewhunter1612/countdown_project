@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e"
   },
   "dependencies": {
     "core-js": "^3.6.5",
-    "vue": "^2.6.11",
+    "firebase": "^8.6.1",
+    "firebase-tools": "^9.10.2",
+    "vue": "^2.6.12",
+    "vue-cli": "^2.9.6",
     "vue-google-charts": "^0.3.3"
   },
   "devDependencies": {
