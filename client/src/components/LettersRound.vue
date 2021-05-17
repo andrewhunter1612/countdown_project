@@ -27,8 +27,8 @@ import {eventBus} from '@/main.js'
 
     data(){
       return {
-        letters: ['f', 'i', 'r', 'e', 'b', 'o', 'a', 'r', 'd'],
-        // letters:[],
+        // letters: ['f', 'i', 'r', 'e', 'b', 'o', 'a', 'r', 'd'],
+        letters:[],
         timerEnded: false,
         enteredWords: [],
         numberOfPlayers: 2,

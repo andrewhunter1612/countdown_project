@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "firebase": "^8.6.1",
+    "firebase-tools": "^9.10.2",
+    "vue-google-charts": "^0.3.3",
+    "vue-router": "^3.5.1"
+  }
+}
